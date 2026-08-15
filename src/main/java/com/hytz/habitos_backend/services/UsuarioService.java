@@ -29,4 +29,16 @@ public class UsuarioService {
     public Optional<Usuario> buscarPorId(Long id) {
         return usuarioRepository.findById(id);
     }
+
+    public Usuario actualizarUsuario(Long id, Usuario datosActualizados) {
+        return usuarioRepository.findById(id)
+                .map(usuarioExistente -> {
+                    usuarioExistente.setNombre(datosActualizados.getNombre());
+                    usuarioExistente.setEmail(datosActualizados.getEmail());
+                    usuarioExistente.setContraseña(datosActualizados.getContraseña());
+                    // Si tienes más campos en la entidad Usuario (ej. contraseña), actúalizalos aquí
+                    return usuarioRepository.save(usuarioExistente);
+                })
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+    }
 }

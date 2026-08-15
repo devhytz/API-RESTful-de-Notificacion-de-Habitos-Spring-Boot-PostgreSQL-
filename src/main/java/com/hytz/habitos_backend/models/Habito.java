@@ -14,7 +14,7 @@ public class Habito {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    private String mensaje;
+    private String descripcion;
     private String estado;
     private int periodo;
     @ManyToOne(fetch = FetchType.LAZY)

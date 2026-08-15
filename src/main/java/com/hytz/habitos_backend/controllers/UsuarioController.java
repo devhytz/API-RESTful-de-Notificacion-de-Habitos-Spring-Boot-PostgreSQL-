@@ -41,4 +41,14 @@ public class UsuarioController {
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
+        try {
+            Usuario usuarioActualizado = usuarioService.actualizarUsuario(id, usuario);
+            return ResponseEntity.ok(usuarioActualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

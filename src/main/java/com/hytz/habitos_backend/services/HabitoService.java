@@ -36,4 +36,16 @@ public class HabitoService {
         return habitoRepository.findById(id);
     }
 
+    public Habito actualizarHabito(Long id, Habito datosActualizados) {
+        return habitoRepository.findById(id)
+                .map(habitoExistente -> {
+                    habitoExistente.setNombre(datosActualizados.getNombre());
+                    habitoExistente.setDescripcion(datosActualizados.getDescripcion());
+                    habitoExistente.setPeriodo(datosActualizados.getPeriodo());
+                    // Actualiza aquí los campos adicionales que tenga tu entidad Habito
+                    return habitoRepository.save(habitoExistente);
+                })
+                .orElseThrow(() -> new RuntimeException("Hábito no encontrado con ID: " + id));
+    }
+
 }

@@ -45,4 +45,14 @@ public class HabitoController {
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Habito> actualizarHabito(@PathVariable Long id, @RequestBody Habito habito) {
+        try {
+            Habito habitoActualizado = habitoService.actualizarHabito(id, habito);
+            return ResponseEntity.ok(habitoActualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
