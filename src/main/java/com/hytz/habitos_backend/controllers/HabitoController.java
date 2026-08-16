@@ -3,6 +3,7 @@ package com.hytz.habitos_backend.controllers;
 import com.hytz.habitos_backend.models.Habito;
 import com.hytz.habitos_backend.models.Usuario;
 import com.hytz.habitos_backend.services.HabitoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class HabitoController {
     private final HabitoService habitoService;
 
     @PostMapping("/usuario/{usuarioId}")
-    public ResponseEntity<Habito> crearHabito(@PathVariable Long usuarioId, @RequestBody Habito habito) {
+    public ResponseEntity<Habito> crearHabito(@PathVariable Long usuarioId, @Valid @RequestBody Habito habito) {
         Habito nuevoHabito = habitoService.crearHabito(usuarioId, habito);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoHabito);
     }
@@ -31,23 +32,21 @@ public class HabitoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Habito> obtenerHabitoPorId(@PathVariable Long id) {
-        return habitoService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        Habito habito = habitoService.buscarPorId(id);
+        return ResponseEntity.ok(habito);
+
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarHabito(@PathVariable Long id) {
-        return habitoService.buscarPorId(id)
-                .map(habito -> {
-                    habitoService.eliminarHabito(id);
-                    return ResponseEntity.noContent().<Void>build();
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        habitoService.buscarPorId(id);
+        habitoService.eliminarHabito(id);
+        return ResponseEntity.noContent().build();
+
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Habito> actualizarHabito(@PathVariable Long id, @RequestBody Habito habito) {
+    public ResponseEntity<Habito> actualizarHabito(@PathVariable Long id, @Valid @RequestBody Habito habito) {
         try {
             Habito habitoActualizado = habitoService.actualizarHabito(id, habito);
             return ResponseEntity.ok(habitoActualizado);

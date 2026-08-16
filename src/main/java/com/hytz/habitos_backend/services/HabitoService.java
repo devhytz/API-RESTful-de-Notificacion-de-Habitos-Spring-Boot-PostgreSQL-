@@ -1,5 +1,6 @@
 package com.hytz.habitos_backend.services;
 
+import com.hytz.habitos_backend.exception.ResourceNotFoundException;
 import com.hytz.habitos_backend.models.Habito;
 import com.hytz.habitos_backend.models.Usuario;
 import com.hytz.habitos_backend.repositories.HabitoRepository;
@@ -32,8 +33,8 @@ public class HabitoService {
         habitoRepository.deleteById(id);
     }
 
-    public Optional<Habito> buscarPorId(Long id) {
-        return habitoRepository.findById(id);
+    public Habito buscarPorId(Long id) {
+        return habitoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("El habito con ID:" + id + "No fue encontrado"));
     }
 
     public Habito actualizarHabito(Long id, Habito datosActualizados) {

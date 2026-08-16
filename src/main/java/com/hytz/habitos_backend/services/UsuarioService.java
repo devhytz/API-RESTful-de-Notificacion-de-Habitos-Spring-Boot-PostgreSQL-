@@ -1,5 +1,6 @@
 package com.hytz.habitos_backend.services;
 
+import com.hytz.habitos_backend.exception.ResourceNotFoundException;
 import com.hytz.habitos_backend.models.Usuario;
 import com.hytz.habitos_backend.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,8 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public Optional<Usuario> buscarPorId(Long id) {
-        return usuarioRepository.findById(id);
+    public Usuario buscarPorId(Long id) {
+        return usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con el ID: " + id));
     }
 
     public Usuario actualizarUsuario(Long id, Usuario datosActualizados) {
