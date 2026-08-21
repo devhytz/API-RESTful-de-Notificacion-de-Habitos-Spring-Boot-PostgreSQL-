@@ -2,12 +2,15 @@ package com.hytz.habitos_backend.services;
 
 import com.hytz.habitos_backend.exception.ResourceNotFoundException;
 import com.hytz.habitos_backend.models.Habito;
+import com.hytz.habitos_backend.models.Notificacion;
 import com.hytz.habitos_backend.models.Usuario;
 import com.hytz.habitos_backend.repositories.HabitoRepository;
+import com.hytz.habitos_backend.repositories.NotificacionRepository;
 import com.hytz.habitos_backend.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +20,7 @@ public class HabitoService {
 
     private final HabitoRepository habitoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final NotificacionRepository notificacionRepository;
 
     public Habito crearHabito(Long usuarioId, Habito habito) {
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("No se encontró el usuario con ID: " + usuarioId));
@@ -48,5 +52,19 @@ public class HabitoService {
                 })
                 .orElseThrow(() -> new RuntimeException("Hábito no encontrado con ID: " + id));
     }
+
+    public Notificacion crearNotificacionParaHabito(Habito habito) {
+        Notificacion notificacion = new Notificacion();
+
+        notificacion.setMensaje("Es hora de tu habito: " + habito.getNombre());
+        notificacion.setFechaHoraProgramada(LocalDateTime.now().plusMinutes(habito.getPeriodo()));
+
+        notificacion.setHabito(habito);
+
+        notificacionRepository.save(notificacion);
+
+        return notificacion;
+    }
+
 
 }
