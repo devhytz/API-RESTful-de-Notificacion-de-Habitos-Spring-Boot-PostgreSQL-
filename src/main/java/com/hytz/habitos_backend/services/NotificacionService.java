@@ -1,5 +1,6 @@
 package com.hytz.habitos_backend.services;
 
+import com.hytz.habitos_backend.exception.ResourceNotFoundException;
 import com.hytz.habitos_backend.models.Habito;
 import com.hytz.habitos_backend.models.Notificacion;
 import com.hytz.habitos_backend.repositories.HabitoRepository;
@@ -19,7 +20,7 @@ public class NotificacionService {
 
     public Notificacion crearNotificacion(Long habitoId) {
         Habito habito = habitoRepository.findById(habitoId)
-                .orElseThrow(() -> new RuntimeException("Hábito no encontrado con ID: " + habitoId));
+                .orElseThrow(() -> new ResourceNotFoundException("Hábito no encontrado con ID: " + habitoId));
 
         Notificacion notificacion = new Notificacion();
         notificacion.setHabito(habito);
