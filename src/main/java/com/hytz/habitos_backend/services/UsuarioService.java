@@ -40,6 +40,6 @@ public class UsuarioService {
                     // Si tienes más campos en la entidad Usuario (ej. contraseña), actúalizalos aquí
                     return usuarioRepository.save(usuarioExistente);
                 })
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + id));
     }
 }
