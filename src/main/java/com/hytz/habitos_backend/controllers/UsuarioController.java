@@ -50,5 +50,5 @@ public class UsuarioController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
-    }
+    } // Refact
 }
