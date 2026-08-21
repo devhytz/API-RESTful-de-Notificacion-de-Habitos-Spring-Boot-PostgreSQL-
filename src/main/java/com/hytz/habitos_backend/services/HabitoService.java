@@ -26,7 +26,11 @@ public class HabitoService {
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("No se encontró el usuario con ID: " + usuarioId));
 
         habito.setUsuario(usuario);
-        return habitoRepository.save(habito);
+        habitoRepository.save(habito);
+        crearNotificacionParaHabito(habito);
+
+        return habito;
+
     }
 
     public List<Habito> obtenerHabitosPorUsuario(Long usuarioId) {
