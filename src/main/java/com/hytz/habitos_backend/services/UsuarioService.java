@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +35,7 @@ public class UsuarioService {
                 .map(usuarioExistente -> {
                     usuarioExistente.setNombre(datosActualizados.getNombre());
                     usuarioExistente.setEmail(datosActualizados.getEmail());
-                    usuarioExistente.setContraseña(datosActualizados.getContraseña());
+                    usuarioExistente.setPassword(datosActualizados.getPassword());
                     // Si tienes más campos en la entidad Usuario (ej. contraseña), actúalizalos aquí
                     return usuarioRepository.save(usuarioExistente);
                 })
