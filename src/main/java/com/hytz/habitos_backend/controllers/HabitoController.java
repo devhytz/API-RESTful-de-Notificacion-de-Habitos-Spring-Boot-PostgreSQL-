@@ -2,12 +2,13 @@ package com.hytz.habitos_backend.controllers;
 
 import com.hytz.habitos_backend.models.Habito;
 import com.hytz.habitos_backend.models.Usuario;
+import com.hytz.habitos_backend.repositories.UsuarioRepository;
 import com.hytz.habitos_backend.services.HabitoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,17 +17,27 @@ import java.util.List;
 @RequestMapping("/api/habitos")
 @RequiredArgsConstructor
 public class HabitoController {
-    private final HabitoService habitoService;
 
-    @PostMapping("/usuario/{usuarioId}")
-    public ResponseEntity<Habito> crearHabito(@PathVariable Long usuarioId, @Valid @RequestBody Habito habito) {
-        Habito nuevoHabito = habitoService.crearHabito(usuarioId, habito);
+    private final HabitoService habitoService;
+    private final UsuarioRepository usuarioRepository; // Lo inyectamos para buscar tu ID
+
+    // Fíjate que aquí ya no dice "/usuario/{usuarioId}"
+    @PostMapping
+    public ResponseEntity<Habito> crearHabito(@Valid @RequestBody Habito habito, Authentication authentication) {
+        String email = authentication.getName(); // Saca el email del Token
+        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow();
+
+        Habito nuevoHabito = habitoService.crearHabito(usuario.getId(), habito);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoHabito);
     }
 
-    @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<Habito>> obtenerHabitos(@PathVariable Long usuarioId) {
-        List<Habito> habitos = habitoService.obtenerHabitosPorUsuario(usuarioId);
+    // Aquí tampoco dice "/usuario/{usuarioId}"
+    @GetMapping
+    public ResponseEntity<List<Habito>> obtenerHabitos(Authentication authentication) {
+        String email = authentication.getName(); // Saca el email del Token
+        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow();
+
+        List<Habito> habitos = habitoService.obtenerHabitosPorUsuario(usuario.getId());
         return ResponseEntity.ok(habitos);
     }
 
@@ -34,7 +45,6 @@ public class HabitoController {
     public ResponseEntity<Habito> obtenerHabitoPorId(@PathVariable Long id) {
         Habito habito = habitoService.buscarPorId(id);
         return ResponseEntity.ok(habito);
-
     }
 
     @DeleteMapping("/{id}")
@@ -42,7 +52,6 @@ public class HabitoController {
         habitoService.buscarPorId(id);
         habitoService.eliminarHabito(id);
         return ResponseEntity.noContent().build();
-
     }
 
     @PutMapping("/{id}")
