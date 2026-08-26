@@ -9,26 +9,26 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "habitos")
+@Table(name = "habits")
 @Getter
 @Setter
-public class Habito {
+public class Habit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "El nombre no puede estar vacio")
-    private String nombre;
-    private String descripcion;
-    private String estado;
+    private String name;
+    private String description;
+    private String state;
     @NotNull(message = "El periodo es obligatorio")
     @Min(value = 1, message = "El periodo debe ser mayor o igual a 1")
-    private int periodo;
+    private int recurrence;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
-    private Usuario usuario;
+    private User user;
 
-    public Habito() {}
+    public Habit() {}
 
 }

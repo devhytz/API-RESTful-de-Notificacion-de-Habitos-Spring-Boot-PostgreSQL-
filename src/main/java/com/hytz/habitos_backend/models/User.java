@@ -16,23 +16,23 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "users")
 @Getter
 @Setter
-public class Usuario implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "El nombre no puede estar vacio")
     @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
-    private String nombre;
+    private String name;
     @NotBlank(message = "El email no puede estar vacio")
     @Email(message = "Debes proporcionar un email válido")
     private String email;
     private String password;
 
-    public Usuario() {}
+    public User() {}
 
 
     @Override

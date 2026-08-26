@@ -33,7 +33,7 @@ public class UsuarioService {
     public Usuario actualizarUsuario(Long id, Usuario datosActualizados) {
         return usuarioRepository.findById(id)
                 .map(usuarioExistente -> {
-                    usuarioExistente.setNombre(datosActualizados.getNombre());
+                    usuarioExistente.setName(datosActualizados.getName());
                     usuarioExistente.setEmail(datosActualizados.getEmail());
                     usuarioExistente.setPassword(datosActualizados.getPassword());
                     // Si tienes más campos en la entidad Usuario (ej. contraseña), actúalizalos aquí

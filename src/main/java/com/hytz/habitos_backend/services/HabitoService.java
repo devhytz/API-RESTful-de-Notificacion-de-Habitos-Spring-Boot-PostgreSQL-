@@ -2,17 +2,14 @@ package com.hytz.habitos_backend.services;
 
 import com.hytz.habitos_backend.exception.ResourceNotFoundException;
 import com.hytz.habitos_backend.models.Habito;
-import com.hytz.habitos_backend.models.Notificacion;
 import com.hytz.habitos_backend.models.Usuario;
 import com.hytz.habitos_backend.repositories.HabitoRepository;
-import com.hytz.habitos_backend.repositories.NotificacionRepository;
 import com.hytz.habitos_backend.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -26,7 +26,7 @@ public class AuthService {
 
         // 1. Creamos un nuevo usuario (entidad de base de datos)
         Usuario usuario = new Usuario();
-        usuario.setNombre(request.getNombre());
+        usuario.setName(request.getNombre());
         usuario.setEmail(request.getEmail());
 
         // 2. ¡MUY IMPORTANTE! Encriptamos la contraseña antes de guardarla
